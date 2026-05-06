@@ -44,3 +44,4 @@ Route::post('/admin/skills', [AdminController::class, 'storeSkill']);
 Route::delete('/admin/skills/{skill}', [AdminController::class, 'deleteSkill']);
 Route::get('/admin/profile', [AdminController::class, 'profile']);
 Route::post('/admin/profile', [AdminController::class, 'updateProfile']);
+Route::post('/admin/sync-github', [AdminController::class, 'syncGithub']);

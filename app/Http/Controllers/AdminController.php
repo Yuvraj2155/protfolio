@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use App\Models\Project;
 use App\Models\Skill;
@@ -150,4 +151,46 @@ class AdminController extends Controller
         }
         return redirect('/admin/profile')->with('success', 'Profile updated.');
     }
+    public function syncGithub()
+{
+    if ($r = $this->checkAuth()) return $r;
+
+    $username = Setting::get('github_username');
+
+    if (!$username) {
+        return back()->withErrors(['error' => 'No GitHub username set in profile.']);
+    }
+
+   $response = \Http::withoutVerifying()->get("https://api.github.com/users/{$username}/repos", [
+    'sort'     => 'updated',
+    'per_page' => 20,
+]);
+
+    if (!$response->ok()) {
+        return back()->withErrors(['error' => 'GitHub API request failed.']);
+    }
+
+    $repos = $response->json();
+
+    foreach ($repos as $repo) {
+        if ($repo['fork']) continue;
+
+        $existing = Project::where('title', $repo['name'])->first();
+
+        if (!$existing) {
+            Project::create([
+                'title'       => $repo['name'],
+                'description' => $repo['description'] ?? 'No description provided.',
+                'tags'        => array_filter([$repo['language']]),
+                'github_url'  => $repo['html_url'],
+                'live_url'    => $repo['homepage'] ?? null,
+                'stack'       => 'other',
+                'visible'     => true,
+                'sort_order'  => 0,
+            ]);
+        }
+    }
+
+    return redirect('/admin/projects')->with('success', 'GitHub repos synced.');
+}
 }

@@ -1,8 +1,19 @@
 <script setup>
 import AdminLayout from '@/layouts/AdminLayout.vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, useForm } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
 const props = defineProps({ stats: Object })
+
+const syncing = ref(false)
+const syncForm = useForm({})
+
+function sync() {
+    syncing.value = true
+    syncForm.post('/admin/sync-github', {
+        onFinish: () => { syncing.value = false }
+    })
+}
 </script>
 
 <template>
@@ -36,6 +47,17 @@ const props = defineProps({ stats: Object })
                 </Link>
             </div>
         </div>
+        <!-- GITHUB SYNC -->
+        <div class="bg-white/5 border border-white/10 rounded-xl p-6 max-w-lg mt-6">
+    <h2 class="text-sm font-bold text-white/50 uppercase tracking-widest mb-2">GitHub sync</h2>
+    <p class="text-xs text-white/40 mb-4">Pulls your public repos from GitHub and adds them as projects. Skips forks and repos already added.</p>
+    <form @submit.prevent="sync">
+        <button type="submit" :disabled="syncing" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-5 py-2 rounded-lg text-sm font-medium hover:bg-emerald-500/30 transition-colors disabled:opacity-50">
+            {{ syncing ? 'Syncing...' : 'Sync GitHub repos now' }}
+        </button>
+    </form>
+    <p v-if="$page.props.flash?.success" class="text-emerald-400 text-xs mt-3">{{ $page.props.flash.success }}</p>
+</div>
 
         <!-- NOTE -->
         <div class="mt-6 bg-blue-500/10 border border-blue-500/20 rounded-xl p-5 max-w-lg">
