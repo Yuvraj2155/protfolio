@@ -9,14 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('skills', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
-
+ public function up(): void
+{
+    Schema::create('skills', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        $table->integer('sort_order')->default(0);
+        $table->timestamps();
+    });
+}
     /**
      * Reverse the migrations.
      */

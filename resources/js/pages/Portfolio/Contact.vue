@@ -1,7 +1,9 @@
 <script setup>
-import PortfolioLayout from '@/Layouts/PortfolioLayout.vue'
+import PortfolioLayout from '@/layouts/PortfolioLayout.vue'
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
+
+const props = defineProps({ settings: Object })
 
 const form = useForm({
     name: '',
@@ -35,38 +37,38 @@ function send() {
                     <h2 class="font-bold text-lg mb-6">Find me here</h2>
 
                     <div class="flex flex-col gap-1">
-                        <a href="https://linkedin.com/in/yuvrajsingh" target="_blank"
-                            class="flex items-center gap-4 py-4 border-b border-white/10 hover:text-[#ff6b2b] transition-colors group">
-                            <div class="w-9 h-9 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center text-sm font-bold flex-shrink-0">in</div>
-                            <div>
-                                <p class="font-medium text-sm">LinkedIn</p>
-                                <p class="text-xs text-white/40">linkedin.com/in/yuvrajsingh</p>
-                            </div>
-                        </a>
+                       <a :href="props.settings.linkedin" target="_blank"
+    class="flex items-center gap-4 py-4 border-b border-white/10 hover:text-[#ff6b2b] transition-colors group">
+    <div class="w-9 h-9 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center text-sm font-bold flex-shrink-0">in</div>
+    <div>
+        <p class="font-medium text-sm">LinkedIn</p>
+        <p class="text-xs text-white/40">{{ props.settings.linkedin }}</p>
+    </div>
+</a>
 
-                        <a href="https://github.com/yuvrajsingh" target="_blank"
-                            class="flex items-center gap-4 py-4 border-b border-white/10 hover:text-[#ff6b2b] transition-colors group">
-                            <div class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center text-sm font-bold flex-shrink-0">gh</div>
-                            <div>
-                                <p class="font-medium text-sm">GitHub</p>
-                                <p class="text-xs text-white/40">github.com/yuvrajsingh</p>
-                            </div>
-                        </a>
+<a :href="'https://github.com/' + props.settings.github_username" target="_blank"
+    class="flex items-center gap-4 py-4 border-b border-white/10 hover:text-[#ff6b2b] transition-colors group">
+    <div class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center text-sm font-bold flex-shrink-0">gh</div>
+    <div>
+        <p class="font-medium text-sm">GitHub</p>
+        <p class="text-xs text-white/40">github.com/{{ props.settings.github_username }}</p>
+    </div>
+</a>
 
-                        <a href="mailto:YOUR_EMAIL_HERE"
-                            class="flex items-center gap-4 py-4 border-b border-white/10 hover:text-[#ff6b2b] transition-colors group">
-                            <div class="w-9 h-9 rounded-lg bg-[#ff6b2b]/15 text-[#ff6b2b] flex items-center justify-center text-sm font-bold flex-shrink-0">@</div>
-                            <div>
-                                <p class="font-medium text-sm">Email</p>
-                                <p class="text-xs text-white/40">YOUR_EMAIL_HERE</p>
-                            </div>
-                        </a>
+<a :href="'mailto:' + props.settings.email"
+    class="flex items-center gap-4 py-4 border-b border-white/10 hover:text-[#ff6b2b] transition-colors group">
+    <div class="w-9 h-9 rounded-lg bg-[#ff6b2b]/15 text-[#ff6b2b] flex items-center justify-center text-sm font-bold flex-shrink-0">@</div>
+    <div>
+        <p class="font-medium text-sm">Email</p>
+        <p class="text-xs text-white/40">{{ props.settings.email }}</p>
+    </div>
+</a>
                     </div>
 
-                    <a href="/resume.pdf" download
-                        class="mt-8 w-full block text-center bg-[#ff6b2b] text-white py-3 rounded-xl font-medium hover:opacity-90 transition-opacity">
-                        Download Resume (PDF)
-                    </a>
+                 <a :href="props.settings.resume_url" download
+    class="mt-8 w-full block text-center bg-[#ff6b2b] text-white py-3 rounded-xl font-medium hover:opacity-90 transition-opacity">
+    Download Resume (PDF)
+</a>
 
                     <p class="text-xs text-white/30 mt-4 leading-relaxed">
                         Based in New York. Available for internships, part-time roles, and freelance projects.

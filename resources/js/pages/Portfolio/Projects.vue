@@ -1,58 +1,16 @@
 <script setup>
-import PortfolioLayout from '@/Layouts/PortfolioLayout.vue'
+import PortfolioLayout from '@/layouts/PortfolioLayout.vue'
 import { ref, computed } from 'vue'
 
+const props = defineProps({ projects: Array })
+
 const activeFilter = ref('all')
-
-const projects = [
-    {
-        title: 'Smart Cash Drawer System',
-        desc: 'Laravel backend + React dashboard + ESP32-CAM for lock control, photo capture, and real-time session tracking.',
-        tags: ['Laravel', 'React', 'ESP32', 'MySQL'],
-        github: '#',
-        live: '#',
-        stack: 'laravel'
-    },
-    {
-        title: 'Hicksville Driving School',
-        desc: 'Full-featured driving school booking platform built with Laravel 12, Inertia.js, and Vue. Scheduling, payments, and instructor management.',
-        tags: ['Laravel', 'Vue', 'Inertia'],
-        github: '#',
-        live: '#',
-        stack: 'laravel'
-    },
-    {
-        title: 'FinPulse Dashboard',
-        desc: 'Finance and crypto dashboard in plain HTML/CSS/JS using Finnhub and CoinGecko APIs. Real-time price tracking and portfolio view.',
-        tags: ['JavaScript', 'Finnhub API', 'CoinGecko'],
-        github: '#',
-        live: '#',
-        stack: 'js'
-    },
-    {
-        title: 'ATC Coordination Platform',
-        desc: 'Real-time ATC web platform with multi-role structure, WebSockets, Redis, and Whisper speech-to-text for voice command parsing.',
-        tags: ['WebSockets', 'Redis', 'Whisper', 'Laravel'],
-        github: '#',
-        live: '#',
-        stack: 'laravel'
-    },
-    {
-        title: 'Parental Control APK',
-        desc: 'Android APK with React dashboard and 3-mode access system (kid, wife, parent) for content control and monitoring.',
-        tags: ['React', 'Android', 'Node.js'],
-        github: '#',
-        live: '#',
-        stack: 'react'
-    },
-]
-
-const filters = ['all', 'laravel', 'react', 'js']
+const filters = ['all', 'laravel', 'react', 'vue', 'js', 'other']
 
 const filtered = computed(() =>
     activeFilter.value === 'all'
-        ? projects
-        : projects.filter(p => p.stack === activeFilter.value)
+        ? props.projects
+        : props.projects.filter(p => p.stack === activeFilter.value)
 )
 </script>
 

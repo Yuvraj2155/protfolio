@@ -9,14 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('projects', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
-
+ public function up(): void
+{
+    Schema::create('projects', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->text('description');
+        $table->json('tags');
+        $table->string('github_url')->nullable();
+        $table->string('live_url')->nullable();
+        $table->string('stack')->default('laravel');
+        $table->boolean('visible')->default(true);
+        $table->integer('sort_order')->default(0);
+        $table->timestamps();
+    });
+}
     /**
      * Reverse the migrations.
      */
